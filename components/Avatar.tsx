@@ -11,7 +11,7 @@ interface AvatarProps {
 // on a reliable public CDN and contains all the standard animations (Idle, Dance, Wave/Talk).
 // To use "Bunny_Dance_Character.glb", you would replace this URL with your local path (e.g., "/Bunny_Dance_Character.glb")
 // and ensure the animation names match those in the GLB file.
-const MODEL_URL = 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/RobotExpressive/RobotExpressive.glb';
+const MODEL_URL = '/Bunny_Dance_Character_1208145324_texture.glb';
 
 export const Avatar: React.FC<AvatarProps> = ({ animation }) => {
   const group = useRef<Group>(null);
