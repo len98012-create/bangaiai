@@ -15,6 +15,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentAnimation, setCurrentAnimation] = useState<string>(CharacterAnimation.IDLE);
 
+  // Initialize Chat on mount
   useEffect(() => {
     initializeChat();
   }, []);
@@ -23,16 +24,20 @@ export default function App() {
     if (!inputText.trim()) return;
 
     const userText = inputText;
-    setInputText('');
+    setInputText(''); // Clear input immediately
     setIsLoading(true);
 
+    // 1. Add User Message
     setMessages(prev => [...prev, { role: 'user', text: userText, timestamp: Date.now() }]);
 
+    // 2. Get AI Response
     const responseText = await sendMessageToGemini(userText);
-
+    
     setIsLoading(false);
     setMessages(prev => [...prev, { role: 'model', text: responseText, timestamp: Date.now() }]);
 
+    // 3. Determine Animation & Speak
+    // Simple keyword detection for 'Dance' intent
     const lowerRes = responseText.toLowerCase();
     if (lowerRes.includes("nhảy") || lowerRes.includes("dance")) {
       handleSpeech(responseText, CharacterAnimation.DANCE);
@@ -44,8 +49,14 @@ export default function App() {
   const handleSpeech = (text: string, activeAnim: string) => {
     speakText(
       text,
-      () => setCurrentAnimation(activeAnim),
-      () => setCurrentAnimation(CharacterAnimation.IDLE)
+      () => {
+        // On Start Speech
+        setCurrentAnimation(activeAnim);
+      },
+      () => {
+        // On End Speech
+        setCurrentAnimation(CharacterAnimation.IDLE);
+      }
     );
   };
 
@@ -62,28 +73,36 @@ export default function App() {
             
             <Avatar animation={currentAnimation} />
             
-            <ContactShadows opacity={0.4} scale={10} blur={2} far={4} resolution={256} color="#000000" />
+            {/* Adjusted shadow position to match avatar feet at -0.9 */}
+            <ContactShadows position={[0, -0.9, 0]} opacity={0.4} scale={10} blur={2} far={4} resolution={256} color="#000000" />
             
             <OrbitControls 
               enablePan={false} 
               enableZoom={false} 
               minPolarAngle={Math.PI / 2.2} 
               maxPolarAngle={Math.PI / 1.8}
-              target={[0, 0.5, 0]}
+              target={[0, 0.5, 0]} // Look at chest/head level
             />
           </Suspense>
         </Canvas>
       </div>
 
-      {/* Loader */}
+      {/* Loading Overlay for 3D Assets */}
       <Loader 
-        containerStyles={{ backgroundColor: '#fce7f3' }}
-        innerStyles={{ backgroundColor: '#ec4899', height: '10px' }}
-        barStyles={{ backgroundColor: '#831843' }}
+        containerStyles={{
+            backgroundColor: '#fce7f3', // Light pink background
+        }}
+        innerStyles={{
+            backgroundColor: '#ec4899', // Pink bar
+            height: '10px'
+        }}
+        barStyles={{
+            backgroundColor: '#831843' // Dark pink progress
+        }}
         dataInterpolation={(p) => `Loading Gia Hân... ${p.toFixed(0)}%`} 
       />
 
-      {/* Header */}
+      {/* Header / Instructions */}
       <div className="absolute top-0 left-0 right-0 p-4 flex justify-between items-start pointer-events-none z-10">
         <div className="bg-white/40 backdrop-blur-md p-3 rounded-2xl shadow-sm border border-white/50">
           <h1 className="text-xl font-bold text-gray-800">Bạn gái ảo Gia Hân 🐰</h1>
@@ -91,7 +110,7 @@ export default function App() {
         </div>
       </div>
 
-      {/* Chat UI */}
+      {/* Chat Interface */}
       <ChatUI 
         messages={messages} 
         inputText={inputText} 
