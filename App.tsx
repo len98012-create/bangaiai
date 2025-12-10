@@ -65,23 +65,23 @@ export default function App() {
       
       {/* 3D Scene */}
       <div className="absolute inset-0 z-0">
-        <Canvas shadows camera={{ position: [0, 1.5, 4], fov: 45 }}>
+        <Canvas shadows camera={{ position: [0, 1.5, 5], fov: 50 }}>
           <Suspense fallback={null}>
             <Environment preset="sunset" />
-            <ambientLight intensity={0.5} />
+            <ambientLight intensity={0.6} />
             <directionalLight position={[5, 10, 5]} intensity={1} castShadow />
             
             <Avatar animation={currentAnimation} />
             
-            {/* Adjusted shadow position to match avatar feet at -0.9 */}
-            <ContactShadows position={[0, -0.9, 0]} opacity={0.4} scale={10} blur={2} far={4} resolution={256} color="#000000" />
+            {/* ContactShadows moved to -1 to match Avatar feet */}
+            <ContactShadows position={[0, -1, 0]} opacity={0.5} scale={10} blur={2.5} far={4} color="#000000" />
             
             <OrbitControls 
               enablePan={false} 
-              enableZoom={false} 
-              minPolarAngle={Math.PI / 2.2} 
+              enableZoom={false} // Disable zoom to keep frame fixed
+              minPolarAngle={Math.PI / 2.5} 
               maxPolarAngle={Math.PI / 1.8}
-              target={[0, 0.5, 0]} // Look at chest/head level
+              target={[0, 1, 0]} // CRITICAL: Look at Y=1 (Upper body/Chest) instead of feet
             />
           </Suspense>
         </Canvas>
