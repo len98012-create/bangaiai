@@ -1,0 +1,7 @@
+{
+  "name": "3D AI Girlfriend (Gia Hân)",
+  "description": "A 3D virtual girlfriend experience using React Three Fiber, Gemini 2.5 Flash for conversation, and Web Speech API for Vietnamese TTS.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
