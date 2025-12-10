@@ -20,11 +20,11 @@ export const Avatar: React.FC<AvatarProps> = ({ animation }) => {
     let actionToPlay: AnimationAction | undefined = actions[CharacterAnimation.IDLE];
 
     if (animation === CharacterAnimation.TALKING) {
-      actionToPlay = actions['Wave']; // Thay 'Wave' bằng tên animation Talk trong GLB
+      actionToPlay = actions['Wave']; // Thay tên animation nếu khác
     } else if (animation === CharacterAnimation.DANCE) {
-      actionToPlay = actions['Dance']; // Thay tên animation nếu cần
+      actionToPlay = actions['Dance']; 
     } else if (animation === CharacterAnimation.IDLE) {
-      actionToPlay = actions['Idle']; // Thay tên animation nếu cần
+      actionToPlay = actions['Idle']; 
     }
 
     if (actionToPlay) {
@@ -37,7 +37,12 @@ export const Avatar: React.FC<AvatarProps> = ({ animation }) => {
   }, [animation, actions]);
 
   return (
-    <group ref={group} dispose={null} position={[0, 0, 0]} scale={[3, 3, 3]}>
+    <group
+      ref={group}
+      dispose={null}
+      position={[0, 0, 0]} // model đứng nổi
+      scale={[3, 3, 3]}    // phóng to để nhìn rõ
+    >
       <primitive object={scene} />
     </group>
   );
