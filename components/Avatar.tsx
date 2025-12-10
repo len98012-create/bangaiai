@@ -8,7 +8,7 @@ interface AvatarProps {
 }
 
 // NOTE: Using RobotExpressive as placeholder.
-const MODEL_URL = 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/RobotExpressive/RobotExpressive.glb';
+const MODEL_URL = '/Bunny_Dance_Character_1208145324_texture.glb';
 
 export const Avatar: React.FC<AvatarProps> = ({ animation }) => {
   const group = useRef<Group>(null);
