@@ -1,3 +1,6 @@
+import { Object3DNode } from '@react-three/fiber';
+import { Group, AmbientLight, DirectionalLight } from 'three';
+
 export interface Message {
   role: 'user' | 'model';
   text: string;
@@ -14,4 +17,16 @@ export enum CharacterAnimation {
   TALKING = 'Wave', // We use Wave or a specific talk animation if available to simulate talking gestures
   DANCE = 'Dance',
   WALK = 'Walking'
+}
+
+// Fix for TypeScript errors where React Three Fiber elements are not recognized in JSX
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      group: Object3DNode<Group, typeof Group>;
+      ambientLight: Object3DNode<AmbientLight, typeof AmbientLight>;
+      directionalLight: Object3DNode<DirectionalLight, typeof DirectionalLight>;
+      primitive: any;
+    }
+  }
 }
