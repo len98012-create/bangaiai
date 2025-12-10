@@ -7,11 +7,8 @@ interface AvatarProps {
   animation: string;
 }
 
-// NOTE: We are using the "Robot Expressive" model from Three.js examples because it is hosted
-// on a reliable public CDN and contains all the standard animations (Idle, Dance, Wave/Talk).
-// To use "Bunny_Dance_Character.glb", you would replace this URL with your local path (e.g., "/Bunny_Dance_Character.glb")
-// and ensure the animation names match those in the GLB file.
-const MODEL_URL = '/Bunny_Dance_Character_1208145324_texture.glb';
+// NOTE: Using RobotExpressive as placeholder.
+const MODEL_URL = 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/RobotExpressive/RobotExpressive.glb';
 
 export const Avatar: React.FC<AvatarProps> = ({ animation }) => {
   const group = useRef<Group>(null);
@@ -27,8 +24,6 @@ export const Avatar: React.FC<AvatarProps> = ({ animation }) => {
 
     // Map high-level state to specific model animation names
     if (animation === CharacterAnimation.TALKING) {
-      // RobotExpressive doesn't have "Talk", but "Wave" or "Yes" works for movement
-      // Or we can blend. Let's use 'Wave' for activity while talking.
       actionToPlay = actions['Wave']; 
     } else if (animation === CharacterAnimation.DANCE) {
       actionToPlay = actions['Dance'];
@@ -45,14 +40,13 @@ export const Avatar: React.FC<AvatarProps> = ({ animation }) => {
     };
   }, [animation, actions]);
 
-  // Clone scene to avoid mutation issues if reused, though not strictly necessary here
-  // Adjusted position to [-0.9] to bring it up to the "floor" and scaled up to [1.8] to fill screen better
+  // Position at [0, -1, 0] (Standard floor)
+  // Scale [2, 2, 2] (Larger size to fill screen)
   return (
-    <group ref={group} dispose={null} position={[0, -0.9, 0]} scale={[1.8, 1.8, 1.8]}>
+    <group ref={group} dispose={null} position={[0, -1, 0]} scale={[2, 2, 2]}>
       <primitive object={scene} />
     </group>
   );
 };
 
-// Preload to avoid pop-in
 useGLTF.preload(MODEL_URL);
